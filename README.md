@@ -4,7 +4,7 @@ This script takes data from [the sheet](https://docs.google.com/spreadsheets/d/1
 How to run:
 - download main.py and sacc1.json
 - put them in a single repository 
-- run main.py
+- run main.py (IDE recommended) 
 
 Might be issues running the script on network hardware since the script uses local system files to store price rate.
 
