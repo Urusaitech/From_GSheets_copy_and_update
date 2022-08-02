@@ -31,8 +31,8 @@ def main():
 
     # get usd/rub today's pair and save to local file
     url = "http://www.cbr.ru/scripts/XML_daily.asp"
-    webFile = urllib.request.urlopen(url)
-    data = webFile.read()
+    web_file = urllib.request.urlopen(url)
+    data = web_file.read()
     with open('usd_rub', "wb") as localFile:
         localFile.write(data)
 
@@ -41,7 +41,6 @@ def main():
     rates_list = []
     for rate in currency:
         value = rate.getElementsByTagName("Value")[0]
-
         rates_list.append(value.firstChild.nodeValue)
 
     usd = rates_list[10]
