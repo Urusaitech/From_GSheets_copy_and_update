@@ -9,6 +9,7 @@ import time
 from datetime import datetime, timedelta
 
 
+# this func establishes a connection with Google api
 def get_service():
     creds_json = os.path.dirname(__file__) + "/sacc1.json"
     scopes = ['https://www.googleapis.com/auth/spreadsheets']
@@ -17,7 +18,6 @@ def get_service():
     return build('sheets', 'v4', http=creds_service)
 
 
-# Change code below to process the `response` dict:
 def main():
     service = get_service()
     sheet = service.spreadsheets()
@@ -25,7 +25,7 @@ def main():
     sheet_id = "1f-qZEX1k_3nj5cahOzntYAnvO4ignbyesVO7yuBdv_g"
 
     resp = sheet.values().batchGet(spreadsheetId=sheet_id, ranges=["Лист1"]).execute()
-    usd_values = []  # values from the source sheet
+    usd_values = []  # values from the source sheet 'стоимость,$' column
     for i in resp['valueRanges'][0]['values'][1:]:
         usd_values.append(i[2])
     usd_values = [int(i) for i in usd_values]
@@ -53,15 +53,17 @@ def main():
     rub_sum.insert(0, 'стоимость,₽')
 
     # check for outdated supply
-    supply = []  # values from the source sheet
+    supply = []  # values from the source sheet 'поставки' column
     for i in resp['valueRanges'][0]['values'][1:]:
         supply.append(i[3])
     supply = [i.replace('.', '/') for i in supply]
     # bind each value of supply list to datetime func
     supply = [datetime(int(i[6:10]), int(i[3:5]), int(i[0:2])) for i in supply]
-    cur_date = datetime.now()
+
+    cur_date = datetime.now()  # gets current date from the module
     outdated_supply = []
 
+    # marks outdated supply
     for date in supply:
         if date < cur_date:
             outdated_supply.append('просрочено')
