@@ -107,7 +107,7 @@ def main():
         pprint(add_supply_resp)
 
         time.sleep(3)
-        # main()
+        main()
     except Exception as e:
         print(e)
 
