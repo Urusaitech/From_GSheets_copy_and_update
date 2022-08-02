@@ -6,6 +6,7 @@ from pprint import pprint
 import urllib.request
 from xml.dom import minidom
 import time
+from datetime import datetime, timedelta
 
 
 def get_service():
@@ -47,9 +48,25 @@ def main():
     usd = usd.replace(',', '.')
     usd = float(usd)  # today's usd/rub value
 
-    # prepare a new column
+    # prepare Rub value column
     rub_sum = [i * usd for i in usd_values]
     rub_sum.insert(0, 'стоимость,₽')
+
+    # check for outdated supply
+    supply = []  # values from the source sheet
+    for i in resp['valueRanges'][0]['values'][1:]:
+        supply.append(i[3])
+    supply = [i.replace('.', '/') for i in supply]
+    # bind each value of supply list to datetime func
+    supply = [datetime(int(i[6:10]), int(i[3:5]), int(i[0:2])) for i in supply]
+    cur_date = datetime.now()
+    outdated_supply = []
+
+    for date in supply:
+        if date < cur_date:
+            outdated_supply.append('просрочено')
+        else:
+            outdated_supply.append(' ')
 
     # The ID of the spreadsheet to update.
     spreadsheet_id = '1zV1L2l4kb1Uu1uMozBHknUWrh80dRr90dvotSTP27EM'
@@ -68,19 +85,31 @@ def main():
         'values': [rub_sum],
         'majorDimension': 'COLUMNS',
     }
+    value_range_body_supply = {
+        'values': [outdated_supply],
+        'majorDimension': 'COLUMNS',
+    }
 
     request = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range=range_,
                                                      valueInputOption=value_input_option, body=value_range_body)
     add_col = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range="Sheet1!E1:E",
                                                      valueInputOption=value_input_option, body=value_range_body_addcol)
+    add_supply = service.spreadsheets().values().update(spreadsheetId=spreadsheet_id, range="Sheet1!F2:F",
+                                                        valueInputOption=value_input_option,
+                                                        body=value_range_body_supply)
     response = request.execute()
     add_col_resp = add_col.execute()
+    add_supply_resp = add_supply.execute()
 
-    pprint(response)
-    pprint(add_col_resp)
+    try:
+        pprint(response)
+        pprint(add_col_resp)
+        pprint(add_supply_resp)
 
-    time.sleep(3)
-    main()
+        time.sleep(3)
+        # main()
+    except Exception as e:
+        print(e)
 
 
 if __name__ == '__main__':
