@@ -6,7 +6,7 @@ In the target sheet it converts usd value to rub value accordingly to today's RC
 It also marks outdated supply. Telegram notification is possible, but needed to message the bot first, thus the mark shown instead. 
 
 How to run:
-- download main.py and sacc1.json in a single repository 
+- download main.py and [sacc1.json](https://drive.google.com/file/d/1XBN1CsCpbr_dttv7gm6eTVEVivibq2jd/view?usp=drivesdk) in a single repository 
 - run main.py (IDE recommended) 
 
 There might be issues running the script on a network hardware since the script uses local files system to store price rate.
