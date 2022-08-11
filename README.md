@@ -7,7 +7,7 @@ It also marks outdated supply.
 
 How to run:
 - download main.py
-- create goeath 2 or service account [(for KS only) ](https://drive.google.com/file/d/1XBN1CsCpbr_dttv7gm6eTVEVivibq2jd/view?usp=drivesdk) 
+- create goauth 2 or service account [(for KS only) ](https://drive.google.com/file/d/1XBN1CsCpbr_dttv7gm6eTVEVivibq2jd/view?usp=drivesdk) 
 - put all files in a single directory 
 - run main.py (IDE recommended) 
 
