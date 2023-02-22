@@ -10,6 +10,7 @@ from datetime import datetime, timedelta
 
 
 # this func establishes a connection with Google api
+# TODO: comments, types
 def get_service():
     creds_json = os.path.dirname(__file__) + "/sacc1.json"
     scopes = ['https://www.googleapis.com/auth/spreadsheets']
@@ -17,7 +18,7 @@ def get_service():
     creds_service = ServiceAccountCredentials.from_json_keyfile_name(creds_json, scopes).authorize(httplib2.Http())
     return build('sheets', 'v4', http=creds_service)
 
-
+# TODO: comments, refactir in smaller funcs, types
 def main():
     service = get_service()
     sheet = service.spreadsheets()
